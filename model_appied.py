@@ -7,10 +7,13 @@ from sklearn.manifold import TSNE
 from mpl_toolkits.mplot3d import Axes3D
 from sklearn.cluster import KMeans
 import numpy as np
+from textblob import TextBlob
+from textblob.sentiments import NaiveBayesAnalyzer
 
 def word_2_vec(train_data):
     model_w2v = Word2Vec([train_data], size=100, window=10, min_count=1, workers=4, sg=1)
-    w1 = ['food', 'vietnamese']
+    #w1 = ['main','dishes', 'vietnamese']
+    w1 = "food"
     pred_mot = model_w2v.wv.most_similar(positive=w1)
     # pred_mot = model_w2v.wv.similar_by_word('food')
     print('Predict words with Word2Vec:')
@@ -97,6 +100,14 @@ def k_means(data_resto):
         ax.dist = 12
         fignum = fignum + 1
     plt.show()
+
+def blob(tweet_raw):
+    data_bloc = TextBlob(tweet_raw, analyzer=NaiveBayesAnalyzer())
+    sentiment = []
+    for sentence in data_bloc.sentences:
+        sentiment.append(sentence.sentiment.classification)
+    return sentiment
+
 
 
 
